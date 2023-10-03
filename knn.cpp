@@ -9,8 +9,34 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include<ostream>
 
 using namespace std;
+
+void dataTable(int sqft[], int bedroom[], int bathroom[], int price[]){
+    vector<int> pushSqft;
+    vector<int> pushBedroom;
+    vector<int> pushBathroom;
+    vector<int> pushPrice;
+    // Table view for SquareFeet Feature
+    for(int elements = 0; elements < (sizeof(sqft)/sizeof(sqft[0])); elements++){
+        pushSqft.push_back(sqft[elements]);
+    }
+    // Table view for Bedroom Feature
+     for(int elements = 0; elements < (sizeof(bedroom)/sizeof(bedroom[0])); elements++){
+        pushBedroom.push_back(bedroom[elements]);
+    }
+     // Table view for Bathroom Feature
+     for(int elements = 0; elements < (sizeof(bathroom)/sizeof(bathroom[0])); elements++){
+        pushBathroom.push_back(bathroom[elements]);
+    }
+     // Table view for Price Feature
+     for(int elements = 0; elements < (sizeof(price)/sizeof(price[0])); elements++){
+        pushPrice.push_back(price[elements]);
+    }
+    cout << "Sqft: " << " " << pushSqft << "|" <<  " " << "Bedroom: " << " " << pushBedroom << "|" <<  " " << "Bathroom: " << " " << pushBathroom << "|" <<  " " << "Price: " << " " << pushPrice << "|" <<  " " << endl;
+}
 
 int sqftCalc(int sqft[], int ipSqft){
     for(int elements=0; elements < (sizeof(sqft)/sizeof(sqft[0])); elements++){
@@ -61,6 +87,7 @@ int main(){
     int bedroom[5] = {3,4,3,4,3};
     int bathroom[5] = {2,2,2,3,2};
     int price[5] = {250000, 320000, 300000, 350000, 270000};
+    dataTable(sqft, bedroom, bathroom, price);
     cout << sqftCalc(sqft, ipSqft);
     eculideanDist(k, sqft, bedroom, bathroom, ipSqft, ipBed, ipBath);
 }
