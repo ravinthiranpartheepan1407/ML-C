@@ -14,61 +14,34 @@
 
 using namespace std;
 
-void dataTable(int sqft[], int bedroom[], int bathroom[], int price[]){
-    vector<int> pushSqft;
-    vector<int> pushBedroom;
-    vector<int> pushBathroom;
-    vector<int> pushPrice;
-    // Table view for SquareFeet Feature
-    for(int elements = 0; elements < (sizeof(sqft)/sizeof(sqft[0])); elements++){
-        pushSqft.push_back(sqft[elements]);
-    }
-    // Table view for Bedroom Feature
-     for(int elements = 0; elements < (sizeof(bedroom)/sizeof(bedroom[0])); elements++){
-        pushBedroom.push_back(bedroom[elements]);
-    }
-     // Table view for Bathroom Feature
-     for(int elements = 0; elements < (sizeof(bathroom)/sizeof(bathroom[0])); elements++){
-        pushBathroom.push_back(bathroom[elements]);
-    }
-     // Table view for Price Feature
-     for(int elements = 0; elements < (sizeof(price)/sizeof(price[0])); elements++){
-        pushPrice.push_back(price[elements]);
-    }
-    cout << "Sqft: " << " " << pushSqft << "|" <<  " " << "Bedroom: " << " " << pushBedroom << "|" <<  " " << "Bathroom: " << " " << pushBathroom << "|" <<  " " << "Price: " << " " << pushPrice << "|" <<  " " << endl;
-}
-
-int sqftCalc(int sqft[], int ipSqft){
-    for(int elements=0; elements < (sizeof(sqft)/sizeof(sqft[0])); elements++){
-        cout << "Comparing sqft from data: " << sqft[elements] << " " << "with" << " " << ipSqft<< endl;
-        int distCalc =  pow((ipSqft - sqft[elements]), 2);
-        cout<< "The calculated distance between each sqft: "<< sqft[elements] << " " << "and" << " " << ipSqft << " " << "is" << " " << distCalc <<endl;
-        return distCalc;
+void dataTable(int sqft[], int bedroom[], int bathroom[], int price[], int size){
+    for(int elements = 0; elements < size; elements++){
+        cout << "Sqft: " << " " << sqft[elements] << "|" <<  " " << "Bedroom: " << " " << bedroom[elements] << "|" <<  " " << "Bathroom: " << " " << bathroom[elements] << "|" <<  " " << "Price: " << " " << price[elements] << "|" <<  " " << endl;
     }
 }
 
-int bedCalc(int bedroom[], int ipBed){
-    for(int elements = 0; elements < (sizeof(bedroom)/sizeof(bedroom[0])); elements++){
-        cout << "Comparing Bedroom Freq from dataset: " << bedroom[elements] << " " << "with" << " " << "Requested Freq:" << " " << ipBed<< endl;
+
+void eculideanDist(int k, int sqft[], int bedroom[], int bathroom[], int ipSqft, int ipBed, int ipBath, int size){
+    float dist[5];
+
+    for(int elements=0; elements < size; elements++){
+        cout << "Comparing sqft: " << sqft[elements] << " " << "with" << " " << ipSqft<< endl;
+        int sqftDistCalc =  pow((ipSqft - sqft[elements]), 2);
+        cout<< "Sqft"<< " " << sqft[elements] << " " << "and" << " " << ipSqft << " " << "is" << " " << sqftDistCalc <<endl;
+
+        cout << "Comparing Bedroom Freq: " << bedroom[elements] << " " << "with" << " " << "Requested Freq:" << " " << ipBed<< endl;
         int bedDistCalc = pow((ipBed - bedroom[elements]), 2);
-        cout<< "The calculated distance between each bedroom: "<< bedroom[elements] << " " << "and" << " " << ipBed << " " << "is" << " " << bedDistCalc <<endl;
-        return bedDistCalc;
-    }
-}
+        cout<< "Bedroom"<< " " << bedroom[elements] << " " << "and" << " " << ipBed << " " << "is" << " " << bedDistCalc <<endl;
 
-int bathCalc(int bathroom[], int ipBath){
-    for(int elements = 0; elements < (sizeof(bathroom)/sizeof(bathroom[0])); elements++){
-        cout << "Comparing bathroom Freq from dataset: " << bathroom[elements] << " " << "with" << " " << "Requested Freq:" << " " << ipBath<< endl;
-        int bedDistCalc = pow((ipBath - bathroom[elements]), 2);
-        cout<< "The calculated distance between each bathroom: "<< bathroom[elements] << " " << "and" << " " << ipBath << " " << "is" << " " << bedDistCalc <<endl;
-        return bedDistCalc;
-    }
-}
+        cout << "Comparing bathroom Freq: " << bathroom[elements] << " " << "with" << " " << "Requested Freq:" << " " << ipBath<< endl;
+        int bathDistCalc = pow((ipBath - bathroom[elements]), 2);
+        cout<< "Bathroom"<< " " << bathroom[elements] << " " << "and" << " " << ipBath << " " << "is" << " " << bathDistCalc <<endl;
 
-void eculideanDist(int k, int sqft[], int bedroom[], int bathroom[], int ipSqft, int ipBed, int ipBath){
-    int calcDist = sqftCalc(sqft, ipSqft) + bedCalc(bedroom, ipBed) + bathCalc(bathroom, ipBath);
-    float out = sqrt(calcDist);
-    cout<< "The distance is: " << out;
+        int calcDist = sqftDistCalc + bedDistCalc + bathDistCalc;
+        float totalDist = sqrt(calcDist);
+
+        cout<< totalDist<<endl;
+    }
 }
 
 int main(){
@@ -87,7 +60,7 @@ int main(){
     int bedroom[5] = {3,4,3,4,3};
     int bathroom[5] = {2,2,2,3,2};
     int price[5] = {250000, 320000, 300000, 350000, 270000};
-    dataTable(sqft, bedroom, bathroom, price);
-    cout << sqftCalc(sqft, ipSqft);
-    eculideanDist(k, sqft, bedroom, bathroom, ipSqft, ipBed, ipBath);
+    int size = (sizeof(sqft)/sizeof(sqft[0]));
+    dataTable(sqft, bedroom, bathroom, price, size);
+    eculideanDist(k, sqft, bedroom, bathroom, ipSqft, ipBed, ipBath, size);
 }
