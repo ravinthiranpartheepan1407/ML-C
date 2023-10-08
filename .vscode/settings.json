@@ -60,6 +60,12 @@
     "iostream": "cpp",
     "cmath": "cpp",
     "ostream": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp"
   }
 }
