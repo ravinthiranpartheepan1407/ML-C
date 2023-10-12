@@ -81,6 +81,6 @@ int main(){
 
     double setCentroidX2 = x[3];
     double setCentroidY2 = y[3];
-    int n = 3;
+    int n = 5;
     kmeansclust(x,y,setCentroidX1,setCentroidY1,setCentroidX2,setCentroidY2,n);
 }
