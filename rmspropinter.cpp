@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<double> gradientdescent(vector<double> x, vector<double> y, double input, double learning_rate, int itr){
+vector<double> rmspropinter(vector<double> x, vector<double> y, double input, double learning_rate, double decay, double decRate,double setConst, int itr){
     // y= mx+ b
     // y isthe predicted value
     // x is the number of input,
@@ -15,7 +15,6 @@ vector<double> gradientdescent(vector<double> x, vector<double> y, double input,
 
     for(int iteration = 0; iteration < itr; iteration++){
         double xMean, yMean, prodXY, xyProd, slope, intercept, lsq, mseVal, pdSlope, pdIntercept, slopeNew, interceptNew;
-        double pdSlopeSum, pdInterceptSum;
         vector<double> predict;
 
         // Calculate Mean of Feature 1
@@ -51,36 +50,28 @@ vector<double> gradientdescent(vector<double> x, vector<double> y, double input,
             cout<<"Predicted Iteration: "<<predict[elements]<<endl;
         }
 
-        // Mean squared error
-        for(size_t elements = 0; elements < predict.size(); elements++){
-            double mseDiff = pow((y[elements] - predict[elements]),2);
-            cout<<"MSE Values: "<<mseDiff<<endl;
-            mseVal += mseDiff;
-        }
-        double mseOut = mseVal / x.size();
-
+        // Calculate Gradient Descent with respect to slope and intercept
+        // Slope Evaluation
         // Partial Derivatives of 'm' Slope
         for(size_t elements = 0; elements < x.size(); elements++){
-            double pdSlopeCalc = x[elements] * (y[elements] - predict[elements]);
-            pdSlopeSum += pdSlopeCalc;
+            pdSlope = -2 * x[elements] * (y[elements] - predict[elements]);
         }
-        
-        pdSlope = -(2 * pdSlopeSum) / x.size();
 
         // Partial Derivatives of 'b' Intercept
         for(size_t elements = 0; elements < x.size(); elements++){
-            double pdInterceptCalc = y[elements] - predict[elements];
-            pdInterceptSum += pdInterceptCalc;
+            pdIntercept = -2 * (y[elements] - predict[elements]);
         }
-        
-        pdIntercept = -(2 * pdInterceptSum) / x.size();
 
-        // Update Gradients with learning rate
-        slopeNew = slope - (learning_rate * pdSlope);
-        interceptNew = intercept - (learning_rate * pdIntercept);
+        // Moving Average of squared gradients for both slope and intercept
+        // Typical Decay Rate = 0.9
+        double mvSlope = decay * decRate + (1-decay) * pow(pdSlope,2);
+        double mvIntercept = decay * decRate + (1-decay) * pow(pdIntercept,2);
 
-        slopeRes.push_back(slopeNew);
-        interRes.push_back(interceptNew);
+        // Update m and b using RMSProp
+        double rmsM = slope - (learning_rate / sqrt(mvSlope+setConst)) * pdSlope;
+        double rmsB = intercept - (learning_rate / sqrt(mvIntercept+setConst)) * pdIntercept;
+
+        interRes.push_back(rmsB);
 
         cout<<"Mean of X: "<<xMean<<endl;
         cout<<"Mean of Y: "<<yMean<<endl;
@@ -89,21 +80,27 @@ vector<double> gradientdescent(vector<double> x, vector<double> y, double input,
         cout<<"The Predicted values is: "<<lsq<<endl;
         cout<<"Partial Derivative of Slope: "<<pdSlope<<endl;
         cout<<"Partial Derivative of Intercept: "<<pdIntercept<<endl;
-        cout<<"The updated slope using gradient and learning rate is: "<<slopeNew<<endl;
-        cout<<"The updated intercept using gradient and learning rate is: "<<interceptNew<<endl;
-        cout<<"----------------End of Iteration: "<<itr<<" ------------------"<<endl;
+        cout<<"Moving Average of Slope: "<<mvSlope<<endl;
+        cout<<"Moving Average of Intercept: "<<mvIntercept<<endl;
+        cout<<"RMSProp for Slope: "<<rmsM<<endl;
+        cout<<"RMSProp for Intercept: "<<rmsB<<endl;
+        cout<<"-------- End of Iteration: "<<itr<<" --------"<<endl;
     }
-    return slopeRes;
+    return interRes;
 }
 
 int main(){
     vector<double> x = {1,2,3,4,5};
-    vector<double> y={300,500,700,900,1100};
-    double input = 7;
-    double learning_rate = 0.01;
-    int itr = 162;
-    vector<double> res = gradientdescent(x,y,input,learning_rate,itr);
-    for(size_t elements = 0; elements < res.size(); elements++){
-        cout<<"The Slope and Intercept Gradient values: "<<res[elements]<<endl;
+    vector<double> y = {330,134,567,984,1205};
+    double decay = 0.1;
+    double decRate = 0.9;
+    double learningRate = 0.01;
+    double input = 4;
+    int itr = 1;
+    double setConst = 0.0003;
+    vector<double> rmsInter = rmspropinter(x,y,input,learningRate,decay,decRate,setConst,itr);
+    for(size_t elements = 0; elements < rmsInter.size(); elements++){
+        cout<<rmsInter[elements]<<endl;
     }
+    
 }
