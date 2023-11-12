@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/ravin/ml-c",
-      "program": "c:/Users/ravin/ml-c/build/Debug/outDebug",
+      "cwd": "c:/Users/ravin/ML-C",
+      "program": "c:/Users/ravin/ML-C/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
