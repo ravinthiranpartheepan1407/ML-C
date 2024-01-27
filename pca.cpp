@@ -21,7 +21,7 @@ vector<double> pca(vector<double> x, vector<double> y, int features, int samples
 
     // Covariance of all ordered pairs (x)
     for(size_t elements = 0; elements < x.size(); elements++){
-        double xCov = (x[elements] -xMean);
+        double xCov = (x[elements] - xMean);
         double xCovPow = pow(xCov, 2);
         covX += xCovPow;
     }
@@ -44,6 +44,11 @@ vector<double> pca(vector<double> x, vector<double> y, int features, int samples
     double xyCovar = covXY / (y.size() - 1);
     double yxCovar = xyCovar;
 
+    cout<<"Covariance of X: "<<xCovar<<endl;
+    cout<<"Covariance of Y: "<<yCovar<<endl;
+    cout<<"Covariance of X and Y: "<<xyCovar<<endl;
+    cout<<"Covariance of Y and X: "<<yxCovar<<endl;
+
     // Computing Eigen Values of covars with 2x2 identity matrix (Quadratic)
     double lamSqr = 1;
     double lam = xCovar + yCovar;
@@ -53,6 +58,9 @@ vector<double> pca(vector<double> x, vector<double> y, int features, int samples
     double posQuadSqrt = (-(-lam)) + (sqrt((pow(lam, 2)) - (4 * lamSqr * constant)));
     double eigenX = posQuadSqrt / (2 * lamSqr);
     double eigenY = negQuadSqrt / (2 * lamSqr);
+
+    cout<<"Eigen X Value: "<<eigenX<<endl;
+    cout<<"Eigen Y Value: "<<eigenY<<endl;
 
     // Eigen Vector of X and Y
     // We cosniders eigen val with max value

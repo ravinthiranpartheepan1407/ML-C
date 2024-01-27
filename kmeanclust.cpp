@@ -24,7 +24,6 @@ void kmeansclust(vector<double> &x, vector<double> &y, double setCentroidX1, dou
             double distY2 = pow((y[elements] - setCentroidY2), 2);
             double distx2y2 = distX2 + distY2;
             double sqrtDist2 = sqrt(distx2y2);
-
             centroid2.push_back(sqrtDist2);
         }
 
